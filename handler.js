@@ -135,8 +135,8 @@ function error(errorMessages, statusCode) {
 //   DAO:
 async function emailExists(email, contactId) {
   const params = {
-    TableName: "Contacts",
-    IndexName: "email-index",
+    TableName: process.env.TableName || "Contacts",
+    IndexName: process.env.IndexName || "email-index",
     KeyConditionExpression: "email = :email",
     ExpressionAttributeValues: {
       ":email": email,
@@ -151,7 +151,7 @@ async function emailExists(email, contactId) {
 
 async function updateContact(payload) {
   const params = {
-    TableName: "Contacts",
+    TableName: process.env.TableName || "Contacts",
     Item: payload,
   };
 

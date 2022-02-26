@@ -62,7 +62,6 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-dynamodb-local
   - serverless-offline
-  - serverless-pseudo-parameters
 
 custom:
   stage: ${opt:stage, self:provider.stage}
