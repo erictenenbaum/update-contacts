@@ -1,0 +1,38 @@
+[
+    {
+        "contactId": "1",
+        "firstName": "Joe",
+        "email": "email1@mail.com",
+        "phone": [{"number": "12345678910", "type": "mobile"}]
+    },
+    {
+        "contactId": "2",
+        "firstName": "John",
+        "email": "email2@mail.com",
+        "phone": [{"number": "12345678910", "type": "mobile"}]
+    },
+    {
+        "contactId": "3",
+        "firstName": "Jack",
+        "email": "email3@mail.com",
+        "phone": [{"number": "12345678910", "type": "mobile"}]
+    },
+    {
+        "contactId": "4",
+        "firstName": "Jim",
+        "email": "email4@mail.com",
+        "phone": [{"number": "12345678910", "type": "mobile"}]
+    },
+    {
+        "contactId": "5",
+        "firstName": "Jake",
+        "email": "email5@mail.com",
+        "phone": [{"number": "12345678910", "type": "mobile"}]
+    },
+    {
+        "contactId": "6",
+        "firstName": "Jason",
+        "email": "email6@mail.com",
+        "phone": [{"number": "12345678910", "type": "mobile"}]
+    }
+]

@@ -1,0 +1,86 @@
+service: update-contact-serverless
+org: erictenenbaum10
+
+provider:
+  name: aws
+  stage: local
+  region: "us-west-1"
+  runtime: nodejs14.x
+  environment:
+    accountId: "#{AWS::AccountId}"
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:GetItem
+        - dynamodb:Query
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:${self:provider.environment.accountId}:table/Contacts"
+
+functions:
+  update:
+    handler: handler.handler
+    events:
+      - http:
+          path: /contacts/{contactId}
+          method: put
+          private: false
+          request:
+            parameters:
+              paths:
+                contactId: true
+resources:
+  Resources:
+    ContactDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: contactId
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: contactId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+          - IndexName: email-index
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
+        TableName: "Contacts"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-pseudo-parameters
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  serverless-offline:
+    noPrependStageInUrl: true
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      host: localhost
+      inMemory: false
+      dbPath: .
+      migrate: true
+      seed: true
+      sharedDb: true
+    seed:
+      test:
+        sources:
+          - table: Contacts
+            sources: [./data-examples/seed-data.json]
